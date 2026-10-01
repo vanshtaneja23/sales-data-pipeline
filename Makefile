@@ -1,9 +1,11 @@
 SHELL := /bin/bash
 COMPOSE := docker compose
 AIRFLOW := $(COMPOSE) exec -T airflow-scheduler
-PY := .venv/bin/python
+# PYTHONPATH=src: macOS can flag venv .pth files "hidden", which Python 3.12 then skips.
+PY := PYTHONPATH=src .venv/bin/python
 
-.PHONY: help env up down nuke run trigger test test-integration test-dag test-all dbt-docs lint
+.PHONY: help env up down nuke run trigger test test-integration test-dag test-all dbt-docs lint \
+        drill-stale notebook rag-index ask eval
 
 help:
 	@grep -E '^[a-z-]+:.*##' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  %-18s %s\n", $$1, $$2}'
@@ -61,3 +63,15 @@ notebook: ## build + execute the store-tiering notebook against the warehouse (o
 	  WAREHOUSE_USER=$$POSTGRES_USER WAREHOUSE_PASSWORD=$$POSTGRES_PASSWORD \
 	  .venv/bin/jupyter nbconvert --to notebook --execute --inplace \
 	  --ExecutePreprocessor.timeout=600 analytics/store_tiering.ipynb
+
+WAREHOUSE_ENV = set -a && source .env && set +a && WAREHOUSE_PORT=$${WAREHOUSE_HOST_PORT:-5433} \
+	  WAREHOUSE_USER=$$POSTGRES_USER WAREHOUSE_PASSWORD=$$POSTGRES_PASSWORD
+
+rag-index: ## (re)index dbt docs + data dictionary into pgvector (incremental by content hash)
+	$(WAREHOUSE_ENV) $(PY) -m sales_rag.cli index
+
+ask: ## ask the docs assistant: make ask Q="what does sales_per_customer mean?"
+	$(WAREHOUSE_ENV) $(PY) -m sales_rag.cli ask "$(Q)"
+
+eval: ## run the RAG evaluation harness (writes eval/results/)
+	$(WAREHOUSE_ENV) $(PY) -m sales_rag.cli eval

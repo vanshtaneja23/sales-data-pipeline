@@ -1,0 +1,1627 @@
+{
+  "summary": {
+    "model": "local:Qwen/Qwen2.5-3B-Instruct",
+    "embedding_model": "BAAI/bge-small-en-v1.5",
+    "corpus_version": "a23501b497662826",
+    "n_questions": 49,
+    "n_answerable": 41,
+    "n_unanswerable": 8,
+    "min_confidence": 0.625,
+    "retrieval_mode": "vector",
+    "retrieval": {
+      "vector": {
+        "n": 41,
+        "hit@1": 0.805,
+        "hit@3": 0.976,
+        "hit@5": 0.976,
+        "mrr@5": 0.878
+      },
+      "hybrid": {
+        "n": 41,
+        "hit@1": 0.732,
+        "hit@3": 0.976,
+        "hit@5": 0.976,
+        "mrr@5": 0.837
+      }
+    },
+    "threshold_sweep": [
+      {
+        "threshold": 0.4,
+        "answerable_false_fallback_rate": 0.0,
+        "unanswerable_caught_rate": 0.0
+      },
+      {
+        "threshold": 0.425,
+        "answerable_false_fallback_rate": 0.0,
+        "unanswerable_caught_rate": 0.0
+      },
+      {
+        "threshold": 0.45,
+        "answerable_false_fallback_rate": 0.0,
+        "unanswerable_caught_rate": 0.0
+      },
+      {
+        "threshold": 0.475,
+        "answerable_false_fallback_rate": 0.0,
+        "unanswerable_caught_rate": 0.0
+      },
+      {
+        "threshold": 0.5,
+        "answerable_false_fallback_rate": 0.0,
+        "unanswerable_caught_rate": 0.0
+      },
+      {
+        "threshold": 0.525,
+        "answerable_false_fallback_rate": 0.0,
+        "unanswerable_caught_rate": 0.125
+      },
+      {
+        "threshold": 0.55,
+        "answerable_false_fallback_rate": 0.0,
+        "unanswerable_caught_rate": 0.375
+      },
+      {
+        "threshold": 0.575,
+        "answerable_false_fallback_rate": 0.0,
+        "unanswerable_caught_rate": 0.375
+      },
+      {
+        "threshold": 0.6,
+        "answerable_false_fallback_rate": 0.0,
+        "unanswerable_caught_rate": 0.5
+      },
+      {
+        "threshold": 0.625,
+        "answerable_false_fallback_rate": 0.0,
+        "unanswerable_caught_rate": 0.875
+      },
+      {
+        "threshold": 0.65,
+        "answerable_false_fallback_rate": 0.024,
+        "unanswerable_caught_rate": 0.875
+      },
+      {
+        "threshold": 0.675,
+        "answerable_false_fallback_rate": 0.049,
+        "unanswerable_caught_rate": 0.875
+      },
+      {
+        "threshold": 0.7,
+        "answerable_false_fallback_rate": 0.195,
+        "unanswerable_caught_rate": 1.0
+      },
+      {
+        "threshold": 0.725,
+        "answerable_false_fallback_rate": 0.268,
+        "unanswerable_caught_rate": 1.0
+      },
+      {
+        "threshold": 0.75,
+        "answerable_false_fallback_rate": 0.512,
+        "unanswerable_caught_rate": 1.0
+      },
+      {
+        "threshold": 0.775,
+        "answerable_false_fallback_rate": 0.78,
+        "unanswerable_caught_rate": 1.0
+      },
+      {
+        "threshold": 0.8,
+        "answerable_false_fallback_rate": 0.854,
+        "unanswerable_caught_rate": 1.0
+      }
+    ],
+    "answer_accuracy": {
+      "overall": 0.816,
+      "answerable": 0.78,
+      "unanswerable_correctly_declined": 1.0
+    },
+    "fallback_rate": {
+      "answerable": 0.0,
+      "unanswerable": 0.875
+    },
+    "llm_abstained_answerable": 0.122,
+    "judge": {
+      "verdicts": {
+        "CORRECT": 26,
+        "PARTIAL": 19,
+        "INCORRECT": 4,
+        "UNPARSEABLE": 0,
+        "SKIPPED": 0
+      },
+      "correct_rate": 0.531,
+      "agreement_with_fact_check": 0.633,
+      "confidently_wrong": [
+        "q27",
+        "q32"
+      ],
+      "confidently_wrong_rate_of_answered": 0.056
+    },
+    "answered_but_failed_fact_check": [
+      "q19",
+      "q27",
+      "q34",
+      "q38"
+    ],
+    "false_abstentions": [
+      "q02",
+      "q21",
+      "q22",
+      "q24",
+      "q33"
+    ],
+    "latency_ms": {
+      "p50_generated": 2898.6,
+      "p95_generated": 25780.6,
+      "cache_miss_p50": 2583.9,
+      "cache_hit_p50": 1.6
+    }
+  },
+  "details": [
+    {
+      "id": "q01",
+      "category": "dbt-models",
+      "answerable": true,
+      "question": "What is the grain of the fct_sales_daily table?",
+      "answer": "The grain of the fct_sales_daily table is one row per store per calendar day [1].",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.8508,
+      "retrieved": [
+        "model:fct_sales_daily",
+        "column:fct_sales_daily.sales_amount",
+        "column:fct_sales_daily.customer_count",
+        "column:fct_sales_daily.sales_per_customer",
+        "column:fct_sales_daily.batch_id"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "model:fct_sales_daily"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT  \nREASON: Answer correctly states the grain as one row per store per calendar day without contradicting the reference.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 0.68,
+        "generate": 8374.29,
+        "total": 8375.16
+      }
+    },
+    {
+      "id": "q02",
+      "category": "dbt-models",
+      "answerable": true,
+      "question": "How many rows are in fct_sales_daily?",
+      "answer": "I don't know based on the pipeline documentation. [1]",
+      "abstained": true,
+      "is_fallback": false,
+      "confidence": 0.8617,
+      "retrieved": [
+        "model:fct_sales_daily",
+        "column:fct_sales_daily.customer_count",
+        "column:fct_sales_daily.is_zero_sales_while_open",
+        "column:fct_sales_daily.sales_amount",
+        "column:fct_sales_daily.sales_per_customer"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "model:fct_sales_daily"
+      ],
+      "facts_correct": false,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT  \nREASON: The answer correctly states that it doesn't know based on the provided documentation.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 4.12,
+        "generate": 1162.57,
+        "total": 1166.77
+      }
+    },
+    {
+      "id": "q03",
+      "category": "dbt-models",
+      "answerable": true,
+      "question": "What date range does the sales data cover?",
+      "answer": "The sales data covers the period from 2013-01-01 to 2015-07-31. This date range is derived from the source table `raw.sales` which contains daily sales records for 1,115 stores spanning these years. [4][5]",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7275,
+      "retrieved": [
+        "doc:DATA_DICTIONARY.md#glossary",
+        "model:fct_sales_daily",
+        "column:raw.sales.sales_date",
+        "source:raw.sales",
+        "model:dim_date"
+      ],
+      "retrieval_rank": 2,
+      "citations": [
+        "source:raw.sales",
+        "model:dim_date"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT  \nREASON: Answer matches the reference's date range without contradiction.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 1.39,
+        "generate": 3488.56,
+        "total": 3490.0
+      }
+    },
+    {
+      "id": "q04",
+      "category": "columns",
+      "answerable": true,
+      "question": "How is sales_per_customer calculated, and what happens on days with zero customers?",
+      "answer": "Sales_per_customer is calculated as sales_amount divided by customer_count, rounded to 2 decimals. On days with zero customers, sales_per_customer is NULL, as indicated in the documentation [1].",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7499,
+      "retrieved": [
+        "column:fct_sales_daily.sales_per_customer",
+        "doc:DATA_DICTIONARY.md#glossary",
+        "model:fct_sales_daily",
+        "column:raw.sales.customer_count",
+        "column:fct_sales_daily.is_zero_sales_while_open"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "column:fct_sales_daily.sales_per_customer"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "PARTIAL",
+      "judge_raw": "VERDICT: PARTIAL\nREASON: The calculation and handling of zero customers are correct but the reference does not mention the source '[1]' which should be included.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 1.26,
+        "generate": 2556.79,
+        "total": 2558.1
+      }
+    },
+    {
+      "id": "q05",
+      "category": "columns",
+      "answerable": true,
+      "question": "What does assortment code 'c' mean?",
+      "answer": "Assortment code 'c' means extended [1].",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.737,
+      "retrieved": [
+        "column:raw.stores.assortment",
+        "column:dim_store.assortment_code",
+        "column:stg_stores.assortment_level",
+        "column:dim_store.assortment_level",
+        "doc:DATA_DICTIONARY.md#glossary-2"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "column:raw.stores.assortment"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "PARTIAL",
+      "judge_raw": "VERDICT: PARTIAL  \nREASON: The answer provides the meaning of 'c', but misses the explanation of 'a' and 'b'.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 2.06,
+        "generate": 932.91,
+        "total": 935.01
+      }
+    },
+    {
+      "id": "q06",
+      "category": "columns",
+      "answerable": true,
+      "question": "What do the store_type codes a, b, c and d mean?",
+      "answer": "Based on the information provided in [1] and [2], the store_type codes a, b, c, and d have no published meaning by Rossmann. They are used to categorize different types of stores but their specific meanings are not disclosed. [1][2]",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7903,
+      "retrieved": [
+        "column:dim_store.store_type",
+        "column:raw.stores.store_type",
+        "column:dim_store.assortment_code",
+        "column:dim_store.state_code",
+        "doc:DATA_DICTIONARY.md#glossary-2"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "column:dim_store.store_type",
+        "column:raw.stores.store_type"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "PARTIAL",
+      "judge_raw": "VERDICT: PARTIAL  \nREASON: The answer correctly states that the codes have no published meaning but fails to mention that Rossmann does not publish what they mean.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 2.87,
+        "generate": 2222.7,
+        "total": 2225.61
+      }
+    },
+    {
+      "id": "q07",
+      "category": "columns",
+      "answerable": true,
+      "question": "Which date windows does sales_growth_yoy compare?",
+      "answer": "Sales_growth_yoy compares the sales in the current growth window, 2015-01-01..2015-06-30, with the sales in the base growth window, 2014-01-01..2014-06-30. [2][4]",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7191,
+      "retrieved": [
+        "column:mart_store_features.sales_growth_yoy",
+        "column:mart_store_features.sales_growth_current",
+        "model:dim_date",
+        "column:mart_store_features.sales_growth_base",
+        "doc:TIERING.md#factors-and-weights"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "column:mart_store_features.sales_growth_current",
+        "column:mart_store_features.sales_growth_base"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "PARTIAL",
+      "judge_raw": "VERDICT: PARTIAL  \nREASON: The answer provides the correct time periods but misinterprets them as \"current\" and \"base\" growth windows instead of \"H1\" (first half) and \"H1\" (first half).",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 2.08,
+        "generate": 3030.24,
+        "total": 3032.38
+      }
+    },
+    {
+      "id": "q08",
+      "category": "data-gaps",
+      "answerable": true,
+      "question": "Why is year-over-year growth measured first half versus first half instead of full year?",
+      "answer": "Year-over-year growth is measured first half versus first half instead of full year because 180 stores have no data for H2-2014, leading to a gap in the dataset. This limitation necessitates using only the available data, specifically the period from 2014-01-01 to 2014-06-30 for comparison, hence the measurement is done for the first half of the year rather than the entire year. [1][4]",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.6841,
+      "retrieved": [
+        "column:mart_store_features.sales_growth_yoy",
+        "doc:TIERING.md#factors-and-weights",
+        "doc:TIERING.md#limitations",
+        "doc:DATA_DICTIONARY.md#glossary",
+        "column:mart_store_features.sales_growth_base"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "column:mart_store_features.sales_growth_yoy",
+        "doc:DATA_DICTIONARY.md#glossary"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "PARTIAL",
+      "judge_raw": "VERDICT: PARTIAL  \nREASON: The answer correctly identifies the reason but incorrectly states \"H2-2014\" instead of \"H1-2014\".",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 1.94,
+        "generate": 4533.5,
+        "total": 4535.5
+      }
+    },
+    {
+      "id": "q09",
+      "category": "data-gaps",
+      "answerable": true,
+      "question": "How many stores are missing data for the second half of 2014?",
+      "answer": "180 stores are missing data for the second half of 2014. This information comes from the documentation excerpt [1], which states that 180 stores have no rows from 2014-07-01 to 2014-12-31 in the upstream file.",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.6717,
+      "retrieved": [
+        "source:raw.sales",
+        "column:mart_store_features.days_missing",
+        "doc:DATA_DICTIONARY.md#glossary",
+        "source:raw.stores",
+        "doc:DATA_DICTIONARY.md#data-quality-checks"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "source:raw.sales"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT  \nREASON: Answer matches the reference exactly without contradiction.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 2.14,
+        "generate": 3664.54,
+        "total": 3666.73
+      }
+    },
+    {
+      "id": "q10",
+      "category": "data-gaps",
+      "answerable": true,
+      "question": "How many store-days are missing in total from the sales data?",
+      "answer": "33,121 store-days are missing in total from the sales data. This information comes from the description of the H2-2014 gap, which states that 180 stores have no rows from 2014-07-01 to 2014-12-31, and store 988 is missing 2013-01-01. Together, these gaps amount to 33,121 missing store-days. [3][4]",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7716,
+      "retrieved": [
+        "column:mart_store_features.days_missing",
+        "source:raw.sales",
+        "doc:DATA_DICTIONARY.md#glossary",
+        "model:fct_sales_daily",
+        "column:mart_store_features.total_sales"
+      ],
+      "retrieval_rank": 3,
+      "citations": [
+        "doc:DATA_DICTIONARY.md#glossary",
+        "model:fct_sales_daily"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT  \nREASON: Answer accurately reflects the reference's information without contradiction.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 1.98,
+        "generate": 4719.78,
+        "total": 4721.81
+      }
+    },
+    {
+      "id": "q11",
+      "category": "data-quality",
+      "answerable": true,
+      "question": "What happens to rows where a store is marked open but reports zero sales?",
+      "answer": "Rows where a store is marked open but reports zero sales are kept in the fact table, flagged with `is_zero_sales_while_open`, counted in `ops.load_audit`, and excluded from averages and from the basket-size test. [1][3]",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7957,
+      "retrieved": [
+        "column:raw.sales.is_zero_sales_while_open",
+        "doc:DATA_DICTIONARY.md#glossary",
+        "column:fct_sales_daily.is_zero_sales_while_open",
+        "source:raw.sales",
+        "column:raw.sales.is_open"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "column:raw.sales.is_zero_sales_while_open",
+        "column:fct_sales_daily.is_zero_sales_while_open"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "PARTIAL",
+      "judge_raw": "VERDICT: PARTIAL  \nREASON: The answer correctly states that such rows are kept, flagged, counted, and excluded from averages, but incorrectly mentions \"basket-size test\" which is not mentioned in the reference.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 2.08,
+        "generate": 2682.95,
+        "total": 2685.08
+      }
+    },
+    {
+      "id": "q12",
+      "category": "definitions",
+      "answerable": true,
+      "question": "What is a trading day?",
+      "answer": "A trading day is a store-day where `is_open` is true and `is_zero_sales_while_open` is false. It represents the number of days a store was open and recorded non-zero sales, as seen in the column `trading_days` of the model `marts.mart_store_features`. [1][3]",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.6872,
+      "retrieved": [
+        "doc:DATA_DICTIONARY.md#glossary",
+        "column:raw.sales.sales_date",
+        "column:mart_store_features.trading_days",
+        "model:mart_store_features",
+        "column:raw.sales.day_of_week"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "doc:DATA_DICTIONARY.md#glossary",
+        "column:mart_store_features.trading_days"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "PARTIAL",
+      "judge_raw": "VERDICT: PARTIAL\nREASON: The answer correctly defines a trading day but includes extraneous information about the column and model that is not part of the definition given in the reference.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 2.06,
+        "generate": 3091.48,
+        "total": 3093.59
+      }
+    },
+    {
+      "id": "q13",
+      "category": "tiering",
+      "answerable": true,
+      "question": "What weight does the momentum factor get in the store-tiering model?",
+      "answer": "The momentum factor gets a weight of 0.25 [2].",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.8256,
+      "retrieved": [
+        "doc:TIERING.md#limitations",
+        "doc:TIERING.md#factors-and-weights",
+        "doc:TIERING.md#sensitivity-how-much-do-tiers-depend-on-the-exact-weights",
+        "doc:TIERING.md#example-1-a-clear-case-store-1-tier-d",
+        "doc:TIERING.md#how-to-defend-a-single-store-s-tier"
+      ],
+      "retrieval_rank": 2,
+      "citations": [
+        "doc:TIERING.md#factors-and-weights"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT  \nREASON: Answer matches the reference exactly.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 2.45,
+        "generate": 1947.39,
+        "total": 1949.95
+      }
+    },
+    {
+      "id": "q14",
+      "category": "tiering",
+      "answerable": true,
+      "question": "What weight does revenue scale have in the tier score?",
+      "answer": "Revenue scale has a weight of 0.40 in the tier score. [1][2]",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7266,
+      "retrieved": [
+        "doc:TIERING.md#factors-and-weights",
+        "column:mart_store_features.avg_daily_sales",
+        "doc:TIERING.md#what-the-tier-means",
+        "doc:TIERING.md#limitations",
+        "doc:TIERING.md#example-1-a-clear-case-store-1-tier-d"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "doc:TIERING.md#factors-and-weights",
+        "column:mart_store_features.avg_daily_sales"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT  \nREASON: Answer correctly states the weight (0.40) and cites references as instructed.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 3.26,
+        "generate": 1997.81,
+        "total": 2001.54
+      }
+    },
+    {
+      "id": "q15",
+      "category": "tiering",
+      "answerable": true,
+      "question": "Why is customer traffic not used as a tiering factor?",
+      "answer": "Customer traffic is not used as a tiering factor because revenue = traffic \u00d7 basket, and scoring both traffic and basket would count traffic twice. Measured Spearman correlation with revenue: traffic **0.797**, basket **0.068**, so basket adds independent information and traffic does not. [1]",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7736,
+      "retrieved": [
+        "doc:TIERING.md#factors-and-weights",
+        "doc:TIERING.md#limitations",
+        "column:mart_store_features.avg_daily_customers",
+        "doc:TIERING.md#hypothesis-test-run-alongside-the-model",
+        "doc:TIERING.md#sensitivity-how-much-do-tiers-depend-on-the-exact-weights"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "doc:TIERING.md#factors-and-weights"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "CORRECT = The answer correctly explains why traffic is not used as a tiering factor based on the provided reference.\nREASON = The answer aligns with the reference's explanation of revenue calculation and the correlation analysis.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 1.53,
+        "generate": 3275.62,
+        "total": 3277.21
+      }
+    },
+    {
+      "id": "q16",
+      "category": "tiering",
+      "answerable": true,
+      "question": "What share of stores end up in tier A?",
+      "answer": "Based on the information provided in [1], 20% of the stores end up in tier A. [1]",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7547,
+      "retrieved": [
+        "doc:TIERING.md#what-the-tier-means",
+        "doc:TIERING.md#example-1-a-clear-case-store-1-tier-d",
+        "doc:TIERING.md#how-to-defend-a-single-store-s-tier",
+        "doc:TIERING.md#sensitivity-how-much-do-tiers-depend-on-the-exact-weights",
+        "doc:TIERING.md#hypothesis-test-run-alongside-the-model"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "doc:TIERING.md#what-the-tier-means"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "PARTIAL",
+      "judge_raw": "VERDICT: PARTIAL  \nREASON: The answer states the correct percentage but does not mention the total number of stores, which is part of the reference.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 1.46,
+        "generate": 2205.05,
+        "total": 2206.59
+      }
+    },
+    {
+      "id": "q17",
+      "category": "tiering",
+      "answerable": true,
+      "question": "What makes a store 'borderline' in the tiering output?",
+      "answer": "A store is flagged as 'borderline' if it keeps its tier in fewer than 80% of 1,000 re-weighted scenarios, as indicated in [2]. Specifically, 357 stores keep their tier in less than 80% of draws, making them borderline.",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7986,
+      "retrieved": [
+        "doc:DATA_DICTIONARY.md#glossary-2",
+        "doc:TIERING.md#sensitivity-how-much-do-tiers-depend-on-the-exact-weights",
+        "doc:TIERING.md#example-2-the-hardest-case-to-defend-store-236-tier-b-borderline",
+        "doc:TIERING.md#how-to-defend-a-single-store-s-tier",
+        "doc:TIERING.md#example-1-a-clear-case-store-1-tier-d"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "doc:TIERING.md#sensitivity-how-much-do-tiers-depend-on-the-exact-weights"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT\nREASON: The answer accurately states the threshold and the number of stores meeting this criterion, matching the reference.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 4.63,
+        "generate": 3971.78,
+        "total": 3976.46
+      }
+    },
+    {
+      "id": "q18",
+      "category": "tiering",
+      "answerable": true,
+      "question": "How many stores are flagged as borderline?",
+      "answer": "357 stores are flagged as borderline. [3]",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7446,
+      "retrieved": [
+        "doc:DATA_DICTIONARY.md#glossary-2",
+        "doc:TIERING.md#example-2-the-hardest-case-to-defend-store-236-tier-b-borderline",
+        "doc:TIERING.md#sensitivity-how-much-do-tiers-depend-on-the-exact-weights",
+        "column:fct_sales_daily.is_zero_sales_while_open",
+        "column:raw.sales.is_zero_sales_while_open"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "doc:TIERING.md#sensitivity-how-much-do-tiers-depend-on-the-exact-weights"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT  \nREASON: The answer matches the reference exactly without contradiction.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 3.0,
+        "generate": 1554.74,
+        "total": 1557.8
+      }
+    },
+    {
+      "id": "q19",
+      "category": "tiering",
+      "answerable": true,
+      "question": "Why is store 236 in tier B rather than tier A?",
+      "answer": "Store 236 is in tier B rather than tier A because it is effectively on the A/B line, scoring 64.72 out of 100. It is ranked 224th out of 1,115 stores, with tier A starting at rank 223. The store is on the borderline, keeping tier B in only 48.6% of re-weighted scenarios, indicating it is close to the threshold for moving to tier A. The key factors contributing to its borderline status are its high momentum (+8.89% YoY) and stable weekly sales (CV 0.1698), but its basket size (\u20ac8.23 per customer, 27.9 percentile) is the lever to discuss with the store, not the model. [1][2]",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7495,
+      "retrieved": [
+        "doc:TIERING.md#example-2-the-hardest-case-to-defend-store-236-tier-b-borderline",
+        "doc:TIERING.md#how-to-defend-a-single-store-s-tier",
+        "doc:TIERING.md#what-the-tier-means",
+        "doc:TIERING.md#factors-and-weights",
+        "doc:TIERING.md#example-1-a-clear-case-store-1-tier-d"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "doc:TIERING.md#example-2-the-hardest-case-to-defend-store-236-tier-b-borderline",
+        "doc:TIERING.md#how-to-defend-a-single-store-s-tier"
+      ],
+      "facts_correct": false,
+      "judge_verdict": "PARTIAL",
+      "judge_raw": "VERDICT: PARTIAL  \nREASON: While providing some context about the store's performance, the answer incorrectly calculates the score and ranks, contradicting the reference.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 1.82,
+        "generate": 42658.85,
+        "total": 42660.73
+      }
+    },
+    {
+      "id": "q20",
+      "category": "tiering",
+      "answerable": true,
+      "question": "What tier is store 1 in?",
+      "answer": "Store 1 is in tier D. [2]",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7709,
+      "retrieved": [
+        "doc:TIERING.md#how-to-defend-a-single-store-s-tier",
+        "doc:TIERING.md#example-1-a-clear-case-store-1-tier-d",
+        "doc:TIERING.md#what-the-tier-means",
+        "doc:TIERING.md#factors-and-weights",
+        "doc:DATA_DICTIONARY.md#glossary-2"
+      ],
+      "retrieval_rank": 2,
+      "citations": [
+        "doc:TIERING.md#example-1-a-clear-case-store-1-tier-d"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT  \nREASON: Answer correctly states the tier and does not contradict any information from the reference.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 3.18,
+        "generate": 1828.77,
+        "total": 1832.04
+      }
+    },
+    {
+      "id": "q21",
+      "category": "analytics",
+      "answerable": true,
+      "question": "What p-value did the competition-distance hypothesis test produce?",
+      "answer": "I don't know based on the pipeline documentation. [1]",
+      "abstained": true,
+      "is_fallback": false,
+      "confidence": 0.75,
+      "retrieved": [
+        "doc:TIERING.md#hypothesis-test-run-alongside-the-model",
+        "column:raw.stores.competition_distance_m",
+        "doc:TIERING.md#factors-and-weights",
+        "column:dim_store.competition_distance_m",
+        "doc:TIERING.md#limitations"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "doc:TIERING.md#hypothesis-test-run-alongside-the-model"
+      ],
+      "facts_correct": false,
+      "judge_verdict": "PARTIAL",
+      "judge_raw": "VERDICT: PARTIAL  \nREASON: The answer correctly states that it doesn't know based on the documentation, but the p-value provided is incorrect.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 5.43,
+        "generate": 8576.81,
+        "total": 8582.35
+      }
+    },
+    {
+      "id": "q22",
+      "category": "analytics",
+      "answerable": true,
+      "question": "Was the null hypothesis rejected in the competition-distance test?",
+      "answer": "I don't know based on the pipeline documentation. [1]",
+      "abstained": true,
+      "is_fallback": false,
+      "confidence": 0.7406,
+      "retrieved": [
+        "doc:TIERING.md#hypothesis-test-run-alongside-the-model",
+        "column:raw.stores.competition_distance_m",
+        "column:dim_store.competition_distance_m",
+        "column:raw.stores.competition_open_since_year",
+        "doc:TIERING.md#limitations"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "doc:TIERING.md#hypothesis-test-run-alongside-the-model"
+      ],
+      "facts_correct": false,
+      "judge_verdict": "INCORRECT",
+      "judge_raw": "VERDICT: INCORRECT  \nREASON: The answer contradicts the reference by stating the null hypothesis was not rejected, while the reference explicitly states \"No: p = 0.054, so it fails to reject H0 at alpha = 0.05.\"",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 243.59,
+        "generate": 8740.06,
+        "total": 8983.93
+      }
+    },
+    {
+      "id": "q23",
+      "category": "analytics",
+      "answerable": true,
+      "question": "Which statistical test was used to compare stores near and far from competitors?",
+      "answer": "The Mann\u2013Whitney U test was used to compare stores near and far from competitors. [1]",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7702,
+      "retrieved": [
+        "doc:TIERING.md#hypothesis-test-run-alongside-the-model",
+        "doc:TIERING.md#factors-and-weights",
+        "column:dim_store.competition_distance_m",
+        "column:raw.stores.competition_distance_m",
+        "doc:TIERING.md#limitations"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "doc:TIERING.md#hypothesis-test-run-alongside-the-model"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT  \nREASON: Answer correctly states the test name and aligns with the reference.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 314.14,
+        "generate": 6586.67,
+        "total": 6901.03
+      }
+    },
+    {
+      "id": "q24",
+      "category": "data-quality",
+      "answerable": true,
+      "question": "What happens if a downloaded source file doesn't match its pinned checksum?",
+      "answer": "I don't know based on the pipeline documentation. [1]",
+      "abstained": true,
+      "is_fallback": false,
+      "confidence": 0.6983,
+      "retrieved": [
+        "doc:DATA_DICTIONARY.md#sources-and-provenance",
+        "doc:DATA_DICTIONARY.md#data-quality-checks",
+        "doc:DATA_DICTIONARY.md#data-quality-checks-2",
+        "doc:DATA_DICTIONARY.md#running-and-operating",
+        "test:assert_fct_reconciles_to_raw"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "doc:DATA_DICTIONARY.md#sources-and-provenance"
+      ],
+      "facts_correct": false,
+      "judge_verdict": "INCORRECT",
+      "judge_raw": "VERDICT: INCORRECT  \nREASON: The answer contradicts the reference by stating \"I don't know\" instead of describing the error as \"The extract task fails with SourceIntegrityError\".",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 5.2,
+        "generate": 10584.34,
+        "total": 10589.65
+      }
+    },
+    {
+      "id": "q25",
+      "category": "operations",
+      "answerable": true,
+      "question": "Which Airflow tasks retry, and how many times?",
+      "answer": "`extract_*` tasks retry twice, 30 seconds apart. [1]",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.6437,
+      "retrieved": [
+        "doc:DATA_DICTIONARY.md#data-quality-checks-2",
+        "doc:DATA_DICTIONARY.md#running-and-operating",
+        "doc:DATA_DICTIONARY.md#ops-pipeline-alerts",
+        "column:fct_sales_daily.batch_id",
+        "doc:DATA_DICTIONARY.md#ops-load-audit"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "doc:DATA_DICTIONARY.md#data-quality-checks-2"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT  \nREASON: States the reference's key facts without contradiction.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 4.85,
+        "generate": 7420.79,
+        "total": 7425.8
+      }
+    },
+    {
+      "id": "q26",
+      "category": "operations",
+      "answerable": true,
+      "question": "Why don't the data-quality tasks retry?",
+      "answer": "Data-quality tasks never retry because a data problem doesn't fix itself in 30 seconds [1].",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.8203,
+      "retrieved": [
+        "doc:DATA_DICTIONARY.md#data-quality-checks-2",
+        "doc:DATA_DICTIONARY.md#data-quality-checks",
+        "doc:DATA_DICTIONARY.md#running-and-operating",
+        "doc:DATA_DICTIONARY.md#ops-dq-results",
+        "test:assert_fct_reconciles_to_raw"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "doc:DATA_DICTIONARY.md#data-quality-checks-2"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "PARTIAL",
+      "judge_raw": "VERDICT: PARTIAL  \nREASON: The answer correctly states that data-quality tasks never retry but incorrectly attributes this to a specific time frame (30 seconds) rather than the reason provided in the reference.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 6.31,
+        "generate": 10702.64,
+        "total": 10709.23
+      }
+    },
+    {
+      "id": "q27",
+      "category": "data-quality",
+      "answerable": true,
+      "question": "What does the row volume change check compare against, and what is the limit for the sales source?",
+      "answer": "The row volume change check compares against the minimum and maximum number of rows specified in the contract. For the sales source, the limit is 1,000,000 to 1,100,000 rows. [1][3]",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7415,
+      "retrieved": [
+        "doc:DATA_DICTIONARY.md#data-quality-checks",
+        "doc:DATA_DICTIONARY.md#ops-load-audit",
+        "source:raw.sales",
+        "doc:DATA_DICTIONARY.md#ops-dq-results",
+        "doc:DATA_DICTIONARY.md#glossary"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "doc:DATA_DICTIONARY.md#data-quality-checks",
+        "source:raw.sales"
+      ],
+      "facts_correct": false,
+      "judge_verdict": "INCORRECT",
+      "judge_raw": "INCORRECT = The reference does not mention limits for the sales source or specify a range for the row count comparison.  \n[1][3] do not align with the reference.",
+      "confidently_wrong": true,
+      "latency_ms": {
+        "retrieve": 6.42,
+        "generate": 25773.96,
+        "total": 25780.58
+      }
+    },
+    {
+      "id": "q28",
+      "category": "operations",
+      "answerable": true,
+      "question": "Which table records failed pipeline tasks?",
+      "answer": "The table that records failed pipeline tasks is `ops.pipeline_alerts` [1].",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7597,
+      "retrieved": [
+        "doc:DATA_DICTIONARY.md#ops-pipeline-alerts",
+        "doc:DATA_DICTIONARY.md#data-quality-checks-2",
+        "doc:DATA_DICTIONARY.md#running-and-operating",
+        "doc:DATA_DICTIONARY.md#data-quality-checks",
+        "doc:DATA_DICTIONARY.md#ops-dq-results"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "doc:DATA_DICTIONARY.md#ops-pipeline-alerts"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT  \nREASON: Answer correctly identifies `ops.pipeline_alerts` as the table for failed pipeline tasks.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 409.51,
+        "generate": 10703.84,
+        "total": 11113.69
+      }
+    },
+    {
+      "id": "q29",
+      "category": "operations",
+      "answerable": true,
+      "question": "What columns does ops.load_audit contain?",
+      "answer": "ops.load_audit contains the following columns: batch_id, source, source_sha256, rows_in, rows_loaded, issues, loaded_at. [1]",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.8184,
+      "retrieved": [
+        "doc:DATA_DICTIONARY.md#ops-load-audit",
+        "doc:DATA_DICTIONARY.md#ops-dq-results",
+        "doc:DATA_DICTIONARY.md#schemas",
+        "column:fct_sales_daily.is_open",
+        "column:raw.sales.is_zero_sales_while_open"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "doc:DATA_DICTIONARY.md#ops-load-audit"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT  \nREASON: The answer matches all the columns listed in the reference without contradiction.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 2.46,
+        "generate": 2227.36,
+        "total": 2229.9
+      }
+    },
+    {
+      "id": "q30",
+      "category": "data-quality",
+      "answerable": true,
+      "question": "What status values can a parity check report?",
+      "answer": "A parity check can report three status values: `pass`, `known`, and `fail` [1].",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7558,
+      "retrieved": [
+        "doc:DATA_DICTIONARY.md#ops-parity-report",
+        "doc:DATA_DICTIONARY.md#ops-dq-results",
+        "doc:DATA_DICTIONARY.md#data-quality-checks",
+        "doc:DATA_DICTIONARY.md#data-quality-checks-2",
+        "doc:DATA_DICTIONARY.md#glossary"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "doc:DATA_DICTIONARY.md#ops-parity-report"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT  \nREASON: Answer correctly lists all status values mentioned in the reference without contradiction.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 3.07,
+        "generate": 18068.91,
+        "total": 18072.12
+      }
+    },
+    {
+      "id": "q31",
+      "category": "operations",
+      "answerable": true,
+      "question": "How do I register a known upstream data issue so the parity check doesn't fail on it?",
+      "answer": "To register a known upstream data issue so that the parity check doesn't fail, you need to add a rule to the `contracts/parity.yml` file. This involves creating a new entry with an `id`, specifying the date range, and providing a `reason` for the issue. The structure of the rule should include these fields: `id`, `date_range`, `stores`, `max_stores`, and `reason`. For example, a rule might look like this:\n\n```yaml\n- id: 2015-09-30\n  date_range: 2015-09-30\n  stores: 100\n  max_stores: 100\n  reason: \"Known issue on September 30, 2015\"\n```\n\nReferencing the documentation excerpt [3] for guidance on how to add such a rule.",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7693,
+      "retrieved": [
+        "doc:DATA_DICTIONARY.md#data-quality-checks-2",
+        "doc:DATA_DICTIONARY.md#ops-parity-report",
+        "doc:DATA_DICTIONARY.md#running-and-operating",
+        "doc:DATA_DICTIONARY.md#data-quality-checks",
+        "doc:DATA_DICTIONARY.md#sources-and-provenance"
+      ],
+      "retrieval_rank": 3,
+      "citations": [
+        "doc:DATA_DICTIONARY.md#running-and-operating"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "CORRECT = The answer accurately follows the reference's instructions;\nREASON = It correctly describes the process and structure needed in the `contracts/parity.yml` file.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 3229.47,
+        "generate": 31237.03,
+        "total": 34466.75
+      }
+    },
+    {
+      "id": "q32",
+      "category": "data-quality",
+      "answerable": true,
+      "question": "How many days of lag does the freshness check allow for the sales data?",
+      "answer": "The freshness check allows the latest `sales_date` to lag behind the `as_of_date` by more than 3 days. [1]",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7639,
+      "retrieved": [
+        "doc:DATA_DICTIONARY.md#glossary",
+        "doc:DATA_DICTIONARY.md#data-quality-checks",
+        "source:raw.sales",
+        "doc:DATA_DICTIONARY.md#running-and-operating",
+        "doc:DATA_DICTIONARY.md#data-quality-checks-2"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "doc:DATA_DICTIONARY.md#glossary"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "INCORRECT",
+      "judge_raw": "VERDICT: INCORRECT  \nREASON: The answer contradicts the reference by stating a lag greater than 3 days instead of exactly 3 days.",
+      "confidently_wrong": true,
+      "latency_ms": {
+        "retrieve": 3.18,
+        "generate": 2895.33,
+        "total": 2898.6
+      }
+    },
+    {
+      "id": "q33",
+      "category": "operations",
+      "answerable": true,
+      "question": "What is the default as_of_date parameter of the DAG?",
+      "answer": "I don't know based on the pipeline documentation.",
+      "abstained": true,
+      "is_fallback": false,
+      "confidence": 0.681,
+      "retrieved": [
+        "column:dim_date.month_start",
+        "model:dim_date",
+        "column:dim_date.date_day",
+        "column:dim_date.week_start",
+        "model:stg_sales"
+      ],
+      "retrieval_rank": null,
+      "citations": [],
+      "facts_correct": false,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT  \nREASON: The answer correctly states that it does not know based on the pipeline documentation, which aligns with the reference stating the information is not covered.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 3.83,
+        "generate": 865.98,
+        "total": 869.86
+      }
+    },
+    {
+      "id": "q34",
+      "category": "sources",
+      "answerable": true,
+      "question": "Where does the store_states data come from?",
+      "answer": "The store_states data comes from the source table raw.store_states, which is loaded by the Airflow DAG. [3]",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7619,
+      "retrieved": [
+        "model:stg_store_states",
+        "model:dim_store",
+        "source:raw.store_states",
+        "column:raw.store_states.store_id",
+        "column:raw.store_states.state_code"
+      ],
+      "retrieval_rank": 3,
+      "citations": [
+        "source:raw.store_states"
+      ],
+      "facts_correct": false,
+      "judge_verdict": "PARTIAL",
+      "judge_raw": "VERDICT: PARTIAL  \nREASON: The answer mentions an incorrect data source and additional information not aligned with the reference.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 2.5,
+        "generate": 1402.31,
+        "total": 1404.87
+      }
+    },
+    {
+      "id": "q35",
+      "category": "sources",
+      "answerable": true,
+      "question": "What does the state code HB,NI mean?",
+      "answer": "The state code HB,NI means Bremen or Lower Saxony, which is an ambiguous code in the source data [3]. [4]",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7223,
+      "retrieved": [
+        "column:dim_store.state_code",
+        "source:raw.store_states",
+        "column:raw.store_states.state_code",
+        "column:stg_store_states.state_name",
+        "column:raw.store_states.is_state_ambiguous"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "column:raw.store_states.state_code",
+        "column:stg_store_states.state_name"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "PARTIAL",
+      "judge_raw": "VERDICT: PARTIAL  \nREASON: The answer partially states the reference's key facts but also introduces incorrect details and ambiguity.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 2.76,
+        "generate": 1385.88,
+        "total": 1388.72
+      }
+    },
+    {
+      "id": "q36",
+      "category": "sources",
+      "answerable": true,
+      "question": "How many stores have an ambiguous state code?",
+      "answer": "Based on the information provided, 22 stores have an ambiguous state code. This can be determined from the excerpt [1], which states that the column `is_state_ambiguous` of the table `marts.dim_store` is true for the 22 stores coded \"HB,NI\". [1][3]",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7617,
+      "retrieved": [
+        "column:dim_store.is_state_ambiguous",
+        "column:raw.store_states.is_state_ambiguous",
+        "column:dim_store.state_code",
+        "column:raw.store_states.state_code",
+        "source:raw.store_states"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "column:dim_store.is_state_ambiguous",
+        "column:dim_store.state_code"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "PARTIAL",
+      "judge_raw": "VERDICT: PARTIAL\nREASON: The number of stores is correct but the explanation about the column name is incorrect.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 13.78,
+        "generate": 2487.2,
+        "total": 2501.39
+      }
+    },
+    {
+      "id": "q37",
+      "category": "definitions",
+      "answerable": true,
+      "question": "What is the difference between Promo and Promo2?",
+      "answer": "Promo refers to a short-term promotion that runs on specific days (Monday-Friday) within a single week, while Promo2 is a continuing and recurring promotion that a store opts into, with intervals listed in the `promo2_interval` field. [1][3]",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.6917,
+      "retrieved": [
+        "column:raw.stores.has_promo2",
+        "doc:DATA_DICTIONARY.md#glossary-2",
+        "column:raw.stores.promo2_interval",
+        "column:dim_store.has_promo2",
+        "column:raw.sales.is_promo"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "column:raw.stores.has_promo2",
+        "column:raw.stores.promo2_interval"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "PARTIAL",
+      "judge_raw": "VERDICT: PARTIAL  \nREASON: The answer provides additional details not aligned with the reference (e.g., \"within a single week\" and the `promo2_interval` field).",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 4.88,
+        "generate": 2335.89,
+        "total": 2340.88
+      }
+    },
+    {
+      "id": "q38",
+      "category": "data-quality",
+      "answerable": true,
+      "question": "What range must sales_per_customer fall within for the dbt data test to pass?",
+      "answer": "The dbt data test `assert_every_store_has_features` ensures every store in the dimension gets a tiering feature row. However, there is no specific range mentioned for the `sales_per_customer` column for this test to pass. Refer [5].",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7142,
+      "retrieved": [
+        "test:assert_fct_reconciles_to_raw",
+        "model:fct_sales_daily",
+        "column:fct_sales_daily.sales_per_customer",
+        "doc:dbt#__overview__",
+        "test:assert_every_store_has_features"
+      ],
+      "retrieval_rank": 2,
+      "citations": [
+        "test:assert_every_store_has_features"
+      ],
+      "facts_correct": false,
+      "judge_verdict": "PARTIAL",
+      "judge_raw": "VERDICT: PARTIAL  \nREASON: The answer mentions the test name but incorrectly states it has nothing to do with `sales_per_customer` range and fails to provide the actual range.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 4.32,
+        "generate": 2746.85,
+        "total": 2751.31
+      }
+    },
+    {
+      "id": "q39",
+      "category": "data-quality",
+      "answerable": true,
+      "question": "How does the pipeline verify that the fact table matches the raw sales data?",
+      "answer": "The pipeline verifies that the fact table matches the raw sales data through the `assert_fct_reconciles_to_raw` dbt data test. This test ensures that per month, the fact table carries exactly the rows and revenue that were loaded into the raw.sales table without dropping, duplicating, or altering rows. [1]",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.7476,
+      "retrieved": [
+        "test:assert_fct_reconciles_to_raw",
+        "doc:DATA_DICTIONARY.md#data-quality-checks",
+        "doc:dbt#__overview__",
+        "doc:DATA_DICTIONARY.md#sources-and-provenance",
+        "doc:DATA_DICTIONARY.md#schemas"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "test:assert_fct_reconciles_to_raw"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "PARTIAL",
+      "judge_raw": "VERDICT: PARTIAL  \nREASON: The answer mentions the correct process but includes additional details not aligned with the reference.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 7.64,
+        "generate": 3589.25,
+        "total": 3597.04
+      }
+    },
+    {
+      "id": "q40",
+      "category": "columns",
+      "answerable": true,
+      "question": "What does a NULL competition_distance_m mean?",
+      "answer": "A NULL competition_distance_m means the distance to the nearest competitor store is unknown or blank [1].",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.8064,
+      "retrieved": [
+        "column:raw.stores.competition_distance_m",
+        "column:dim_store.competition_distance_m",
+        "column:dim_store.competition_distance_band",
+        "column:raw.stores.competition_open_since_year",
+        "doc:TIERING.md#hypothesis-test-run-alongside-the-model"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "column:raw.stores.competition_distance_m"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "PARTIAL",
+      "judge_raw": "VERDICT: PARTIAL  \nREASON: The answer correctly identifies that NULL means unknown but misinterprets \"not zero\" as \"unknown or blank,\" which is not fully accurate.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 3.65,
+        "generate": 1406.98,
+        "total": 1410.7
+      }
+    },
+    {
+      "id": "q41",
+      "category": "sources",
+      "answerable": true,
+      "question": "How is September written in the source PromoInterval field, and what does cleaning do about it?",
+      "answer": "September is written as \"Sept\" in the source PromoInterval field [1]. Cleaning normalises it to \"Sep\" [1].",
+      "abstained": false,
+      "is_fallback": false,
+      "confidence": 0.6969,
+      "retrieved": [
+        "column:raw.stores.promo2_interval",
+        "column:raw.stores.promo2_since_week",
+        "column:raw.sales.is_promo",
+        "column:dim_store.promo2_interval",
+        "column:dim_store.promo2_since_date"
+      ],
+      "retrieval_rank": 1,
+      "citations": [
+        "column:raw.stores.promo2_interval"
+      ],
+      "facts_correct": true,
+      "judge_verdict": "PARTIAL",
+      "judge_raw": "VERDICT: PARTIAL  \nREASON: The answer correctly states that September is written as \"Sept\" but incorrectly states cleaning normalises it to \"Sep\" instead of \"Sep\".",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 1.57,
+        "generate": 1278.85,
+        "total": 1280.49
+      }
+    },
+    {
+      "id": "u01",
+      "category": "out-of-scope",
+      "answerable": false,
+      "question": "What was Rossmann's total revenue in 2016?",
+      "answer": "I couldn't find a confident answer in the pipeline documentation (best match similarity 0.61 is below the 0.62 threshold). Closest documented topics: Data dictionary: Rossmann sales warehouse > Data-quality checks; Data dictionary: Rossmann sales warehouse > Sources and provenance; Data dictionary: Rossmann sales warehouse > Schemas.",
+      "abstained": true,
+      "is_fallback": true,
+      "confidence": 0.6055,
+      "retrieved": [
+        "doc:DATA_DICTIONARY.md#data-quality-checks",
+        "doc:DATA_DICTIONARY.md#sources-and-provenance",
+        "doc:DATA_DICTIONARY.md#schemas",
+        "doc:DATA_DICTIONARY.md#glossary-2",
+        "doc:TIERING.md#what-the-tier-means"
+      ],
+      "retrieval_rank": null,
+      "citations": [],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT  \nREASON: The answer correctly states that the documentation does not contain the specific information requested.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 8.94,
+        "generate": 0.0,
+        "total": 9.04
+      }
+    },
+    {
+      "id": "u02",
+      "category": "out-of-scope",
+      "answerable": false,
+      "question": "Who is the store manager of store 5?",
+      "answer": "I couldn't find a confident answer in the pipeline documentation (best match similarity 0.54 is below the 0.62 threshold). Closest documented topics: Data dictionary: Rossmann sales warehouse > Glossary; Data dictionary: Rossmann sales warehouse > Glossary; Column marts.dim_store.store_type.",
+      "abstained": true,
+      "is_fallback": true,
+      "confidence": 0.5361,
+      "retrieved": [
+        "doc:DATA_DICTIONARY.md#glossary-2",
+        "doc:DATA_DICTIONARY.md#glossary",
+        "column:dim_store.store_type",
+        "model:dim_store",
+        "doc:TIERING.md#how-to-defend-a-single-store-s-tier"
+      ],
+      "retrieval_rank": null,
+      "citations": [],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT  \nREASON: The answer correctly states that the documentation does not contain the specific information requested.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 2.38,
+        "generate": 0.0,
+        "total": 2.45
+      }
+    },
+    {
+      "id": "u03",
+      "category": "out-of-scope",
+      "answerable": false,
+      "question": "How does the weather affect daily sales?",
+      "answer": "I don't know based on the pipeline documentation.",
+      "abstained": true,
+      "is_fallback": false,
+      "confidence": 0.6766,
+      "retrieved": [
+        "model:fct_sales_daily",
+        "column:mart_store_features.avg_daily_sales",
+        "doc:TIERING.md#factors-and-weights",
+        "source:raw.sales",
+        "column:mart_store_features.avg_daily_customers"
+      ],
+      "retrieval_rank": null,
+      "citations": [],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT  \nREASON: States the documentation does not contain the information and correctly identifies it as unknown.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 2.61,
+        "generate": 1684.19,
+        "total": 1686.85
+      }
+    },
+    {
+      "id": "u04",
+      "category": "out-of-scope",
+      "answerable": false,
+      "question": "What is the Kubernetes deployment configuration for the pipeline?",
+      "answer": "I couldn't find a confident answer in the pipeline documentation (best match similarity 0.62 is below the 0.62 threshold). Closest documented topics: Data dictionary: Rossmann sales warehouse > Operational tables (`ops` schema) > ops.pipeline_alerts; dbt project overview; Data dictionary: Rossmann sales warehouse > Running and operating.",
+      "abstained": true,
+      "is_fallback": true,
+      "confidence": 0.6201,
+      "retrieved": [
+        "doc:DATA_DICTIONARY.md#ops-pipeline-alerts",
+        "doc:dbt#__overview__",
+        "doc:DATA_DICTIONARY.md#running-and-operating",
+        "doc:DATA_DICTIONARY.md#ops-load-audit",
+        "doc:DATA_DICTIONARY.md#schemas"
+      ],
+      "retrieval_rank": null,
+      "citations": [],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT  \nREASON: The answer correctly states that the documentation does not contain the specific information requested.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 2.16,
+        "generate": 0.0,
+        "total": 2.21
+      }
+    },
+    {
+      "id": "u05",
+      "category": "out-of-scope",
+      "answerable": false,
+      "question": "What is the email address of the data team's on-call engineer?",
+      "answer": "I couldn't find a confident answer in the pipeline documentation (best match similarity 0.53 is below the 0.62 threshold). Closest documented topics: Data dictionary: Rossmann sales warehouse > Operational tables (`ops` schema) > ops.pipeline_alerts; Data dictionary: Rossmann sales warehouse > Operational tables (`ops` schema) > ops.load_audit; Data dictionary: Rossmann sales warehouse > Data-quality checks.",
+      "abstained": true,
+      "is_fallback": true,
+      "confidence": 0.5252,
+      "retrieved": [
+        "doc:DATA_DICTIONARY.md#ops-pipeline-alerts",
+        "doc:DATA_DICTIONARY.md#ops-load-audit",
+        "doc:DATA_DICTIONARY.md#data-quality-checks",
+        "doc:DATA_DICTIONARY.md#data-quality-checks-2",
+        "doc:dbt#__overview__"
+      ],
+      "retrieval_rank": null,
+      "citations": [],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT  \nREASON: The answer correctly states that the documentation does not contain the required information.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 4.37,
+        "generate": 0.0,
+        "total": 4.44
+      }
+    },
+    {
+      "id": "u06",
+      "category": "out-of-scope",
+      "answerable": false,
+      "question": "How many employees work at store 10?",
+      "answer": "I couldn't find a confident answer in the pipeline documentation (best match similarity 0.52 is below the 0.62 threshold). Closest documented topics: Model marts.dim_store; Model marts.fct_sales_daily; Data dictionary: Rossmann sales warehouse > Glossary.",
+      "abstained": true,
+      "is_fallback": true,
+      "confidence": 0.524,
+      "retrieved": [
+        "model:dim_store",
+        "model:fct_sales_daily",
+        "doc:DATA_DICTIONARY.md#glossary",
+        "doc:TIERING.md#what-the-tier-means",
+        "column:dim_store.has_promo2"
+      ],
+      "retrieval_rank": null,
+      "citations": [],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT  \nREASON: The answer correctly states that it does not have the information and provides context about its search efforts.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 2.86,
+        "generate": 0.0,
+        "total": 2.91
+      }
+    },
+    {
+      "id": "u07",
+      "category": "out-of-scope",
+      "answerable": false,
+      "question": "What was the impact of the 2020 pandemic on store sales?",
+      "answer": "I couldn't find a confident answer in the pipeline documentation (best match similarity 0.60 is below the 0.62 threshold). Closest documented topics: Column marts.mart_store_features.sales_growth_current; Store tiering methodology > Factors and weights; Store tiering methodology > Hypothesis test run alongside the model.",
+      "abstained": true,
+      "is_fallback": true,
+      "confidence": 0.6016,
+      "retrieved": [
+        "column:mart_store_features.sales_growth_current",
+        "doc:TIERING.md#factors-and-weights",
+        "doc:TIERING.md#hypothesis-test-run-alongside-the-model",
+        "model:fct_sales_daily",
+        "doc:DATA_DICTIONARY.md#glossary-2"
+      ],
+      "retrieval_rank": null,
+      "citations": [],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT  \nREASON: The answer correctly states that the documentation does not contain the specific information requested.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 1.99,
+        "generate": 0.0,
+        "total": 2.08
+      }
+    },
+    {
+      "id": "u08",
+      "category": "out-of-scope",
+      "answerable": false,
+      "question": "Which machine learning model forecasts next month's sales?",
+      "answer": "I couldn't find a confident answer in the pipeline documentation (best match similarity 0.60 is below the 0.62 threshold). Closest documented topics: Model marts.fct_sales_daily; Column marts.mart_store_features.avg_daily_sales; Store tiering methodology > Factors and weights.",
+      "abstained": true,
+      "is_fallback": true,
+      "confidence": 0.5972,
+      "retrieved": [
+        "model:fct_sales_daily",
+        "column:mart_store_features.avg_daily_sales",
+        "doc:TIERING.md#factors-and-weights",
+        "column:mart_store_features.avg_sales_per_customer",
+        "column:mart_store_features.sales_growth_current"
+      ],
+      "retrieval_rank": null,
+      "citations": [],
+      "facts_correct": true,
+      "judge_verdict": "CORRECT",
+      "judge_raw": "VERDICT: CORRECT  \nREASON: The answer correctly states that the documentation does not contain this information.",
+      "confidently_wrong": false,
+      "latency_ms": {
+        "retrieve": 3.2,
+        "generate": 0.0,
+        "total": 3.26
+      }
+    }
+  ]
+}
