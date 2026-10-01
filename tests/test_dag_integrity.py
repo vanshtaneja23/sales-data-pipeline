@@ -42,3 +42,23 @@ def _all_upstream(dag, task_id: str) -> set[str]:
                 seen.add(up)
                 stack.append(up)
     return seen
+
+
+def test_validation_gates_every_load(dag):
+    from sales_pipeline.sources import SOURCES
+
+    for name in SOURCES:
+        assert f"validate_{name}" in dag.get_task(f"load_{name}").upstream_task_ids
+
+
+def test_post_load_gates_block_dbt(dag):
+    upstream = dag.get_task("dbt_build").upstream_task_ids
+    assert {"check_freshness", "dbt_source_freshness", "parity_check"} <= upstream
+
+
+def test_quality_gates_never_retry_and_alert_on_failure(dag):
+    gates = [t for t in dag.tasks if t.task_id.startswith(("validate_", "check_", "parity", "dbt_"))]
+    assert gates
+    for t in gates:
+        assert t.retries == 0, f"{t.task_id} retries would delay a data-quality alert"
+        assert t.on_failure_callback, f"{t.task_id} has no failure alert"

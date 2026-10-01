@@ -19,23 +19,11 @@ from psycopg import sql
 from sales_pipeline.clean import CLEANERS, CleanResult
 from sales_pipeline.contracts import Contract, load_contract
 from sales_pipeline.ingest import read_raw, sha256_of
+from sales_pipeline.ops import ensure_ops_tables
 from sales_pipeline.sources import SOURCES
 
 log = logging.getLogger(__name__)
 
-AUDIT_DDL = """
-CREATE SCHEMA IF NOT EXISTS ops;
-CREATE TABLE IF NOT EXISTS ops.load_audit (
-  batch_id      text        NOT NULL,
-  source        text        NOT NULL,
-  source_sha256 text        NOT NULL,
-  rows_in       integer     NOT NULL,
-  rows_loaded   integer     NOT NULL,
-  issues        jsonb       NOT NULL,
-  loaded_at     timestamptz NOT NULL DEFAULT now(),
-  PRIMARY KEY (batch_id, source)
-);
-"""
 
 
 class WarehouseSchemaError(RuntimeError):
@@ -84,8 +72,8 @@ def load_frame(
         buf, index=False, header=False, date_format="%Y-%m-%d"
     )
 
+    ensure_ops_tables(conn)
     with conn.transaction(), conn.cursor() as cur:
-        cur.execute(AUDIT_DDL)
         cur.execute(
             sql.SQL("CREATE SCHEMA IF NOT EXISTS {}").format(sql.Identifier(contract.schema_name))
         )

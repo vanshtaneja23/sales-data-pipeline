@@ -9,6 +9,30 @@ models:
       closed days carry sales_amount = 0. Join to dim_store on store_id and to dim_date on
       sales_date = date_day. Missing store-days (the H2-2014 gap for 180 stores) are absent,
       not zero-filled.
+    data_tests:
+      - unique_combination:
+          arguments:
+            columns: [store_id, sales_date]
+      - row_count_between:
+          arguments:
+            min_rows: 1000000
+            max_rows: 1100000
+      - expression_is_true:
+          arguments:
+            expression: "is_open or (sales_amount = 0 and customer_count = 0)"
+          config:
+            description: Closed days must carry no sales and no customers.
+      - expression_is_true:
+          arguments:
+            expression: "sales_amount >= 0 and customer_count >= 0"
+      - expression_is_true:
+          arguments:
+            # Observed range on normal trading days is 2.75..64.96 EUR; bounds are sanity limits.
+            # Flagged anomalies are excluded on purpose: 2 of the 54 open-but-zero-sales rows report
+            # customers (basket 0.00). They are already counted in ops.load_audit, and loosening the
+            # bound to 0 would let *unflagged* zero baskets through.
+            expression: "sales_per_customer between 0.5 and 200"
+            where: "sales_per_customer is not null and not is_zero_sales_while_open"
     columns:
       - name: store_id
         description: Store identifier; foreign key to dim_store.store_id.
@@ -43,12 +67,18 @@ models:
         description: Short-term daily promotion ran that day (Mon-Fri only).
       - name: state_holiday
         description: none, public, easter or christmas.
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [none, public, easter, christmas]
       - name: is_state_holiday
         description: True on any state holiday.
       - name: is_school_holiday
         description: Store-day affected by school holidays.
       - name: is_zero_sales_while_open
-        description: Data-quality flag; open but zero sales (54 rows). Excluded from average-sales features.
+        description: >
+          Data-quality flag; open but zero sales (54 rows; 2 of them still report customers, e.g. store 948
+          on 2013-04-25 with 5 customers). Excluded from average-sales features and basket-size checks.
       - name: batch_id
         description: Airflow run id of the load that produced this row (lineage).
 
@@ -56,12 +86,21 @@ models:
     description: >
       Store dimension. Grain: one row per store (1,115). Combines the Kaggle store reference
       (store.csv) with the store -> federal state mapping (store_states.csv).
+    data_tests:
+      - row_count_between:
+          arguments:
+            min_rows: 1100
+            max_rows: 1200
     columns:
       - name: store_id
         description: Store identifier; primary key.
         data_tests: [unique, not_null]
       - name: store_type
         description: Store model code a/b/c/d. Rossmann does not publish what the models mean.
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [a, b, c, d]
       - name: assortment_code
         description: Raw assortment code a/b/c.
       - name: assortment_level
@@ -112,6 +151,17 @@ models:
     description: >
       One row per store with the performance features used by the store-tiering model
       (analytics/store_tiering.ipynb). "Trading days" means is_open and not is_zero_sales_while_open.
+    data_tests:
+      - expression_is_true:
+          arguments:
+            expression: "avg_daily_sales > 0 and avg_sales_per_customer > 0 and trading_days > 0"
+      - expression_is_true:
+          arguments:
+            # Observed -31%..+54%; anything outside -90%..+300% is a data error, not a business result.
+            expression: "sales_growth_yoy between -0.9 and 3"
+      - expression_is_true:
+          arguments:
+            expression: "weekly_sales_cv > 0 and complete_weeks >= 52"
     columns:
       - name: store_id
         description: Store identifier; primary key.

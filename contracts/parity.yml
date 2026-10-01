@@ -1,0 +1,20 @@
+# Cross-source parity rules.
+#
+# Known upstream defects are baselined here explicitly, each with an id and a reason.
+# The parity check reports them as status "known" (visible, not failing). Anything NOT matched
+# by a rule fails the DAG -- so a known defect can never hide a new one.
+known_missing_store_days:
+  - id: KAGGLE-H2-2014-GAP
+    date_from: 2014-07-01
+    date_to: 2014-12-31
+    # If more stores than this start missing the window, the gap grew: fail.
+    max_stores: 180
+    reason: >
+      The public Kaggle train.csv has no rows for 180 stores from 2014-07-01 to 2014-12-31.
+      The cause is not documented upstream and the data cannot be recovered from this source.
+  - id: STORE-988-2013-01-01
+    stores: [988]
+    date_from: 2013-01-01
+    date_to: 2013-01-01
+    max_stores: 1
+    reason: Store 988 has no row for 2013-01-01 (New Year's Day) in the upstream extract.

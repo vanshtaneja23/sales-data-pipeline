@@ -50,3 +50,7 @@ dbt-docs: ## regenerate dbt docs (manifest/catalog) inside the container
 
 lint:
 	.venv/bin/ruff check src dags tests
+
+drill-stale: ## failure drill: run via the scheduler with as_of 61 days after the data ends -> must fail
+	$(AIRFLOW) airflow dags unpause sales_pipeline
+	$(AIRFLOW) airflow dags trigger sales_pipeline --run-id drill_stale_$$(date +%s) --conf '{"as_of_date": "2015-09-30"}'

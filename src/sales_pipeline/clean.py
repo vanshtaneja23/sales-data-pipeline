@@ -88,6 +88,18 @@ def cast_column(raw: pd.Series, col: Column) -> pd.Series:
     return out
 
 
+def type_errors(df: pd.DataFrame, contract: Contract) -> dict[str, str]:
+    """Try every contract column and collect *all* failures (cleaning stops at the first)."""
+    errors: dict[str, str] = {}
+    for col in contract.columns:
+        if col.source and col.source in df.columns:
+            try:
+                cast_column(df[col.source], col)
+            except DataContractError as exc:
+                errors[col.name] = str(exc)
+    return errors
+
+
 def _apply_contract(df: pd.DataFrame, contract: Contract) -> pd.DataFrame:
     missing = [c for c in contract.source_columns if c not in df.columns]
     if missing:
@@ -111,14 +123,34 @@ def _dedupe(df: pd.DataFrame, contract: Contract, issues: dict[str, int]) -> pd.
     return df.reset_index(drop=True)
 
 
+def normalise_sales(raw: pd.DataFrame) -> pd.DataFrame:
+    df = raw.copy()
+    if "StateHoliday" in df:
+        # Source mixes int 0 and string "0" for "no holiday"; read as str both become "0".
+        df["StateHoliday"] = df["StateHoliday"].str.strip().map(lambda v: STATE_HOLIDAY_CODES.get(v, v))
+    return df
+
+
+def normalise_stores(raw: pd.DataFrame) -> pd.DataFrame:
+    df = raw.copy()
+    if "PromoInterval" in df:
+        # The source abbreviates September as "Sept" while every other month uses three letters.
+        df["PromoInterval"] = df["PromoInterval"].str.replace("Sept", "Sep", regex=False)
+    return df
+
+
+# Known-quirk fixes applied before type casting. Shared with the type-drift check in quality.py
+# so validation sees exactly what the loader will see.
+NORMALISERS: dict[str, Callable[[pd.DataFrame], pd.DataFrame]] = {
+    "sales": normalise_sales,
+    "stores": normalise_stores,
+    "store_states": lambda df: df,
+}
+
+
 def clean_sales(raw: pd.DataFrame, contract: Contract) -> CleanResult:
     issues: dict[str, int] = {}
-    df = raw.copy()
-    # Source mixes int 0 and string "0" for "no holiday"; read as str both become "0".
-    df["StateHoliday"] = df["StateHoliday"].str.strip().map(
-        lambda v: STATE_HOLIDAY_CODES.get(v, v)
-    )
-    out = _apply_contract(df, contract)
+    out = _apply_contract(normalise_sales(raw), contract)
 
     # DayOfWeek is redundant with Date; if they disagree, one of them is wrong -> stop.
     iso_dow = out["sales_date"].dt.dayofweek + 1
@@ -135,12 +167,9 @@ def clean_sales(raw: pd.DataFrame, contract: Contract) -> CleanResult:
 
 def clean_stores(raw: pd.DataFrame, contract: Contract) -> CleanResult:
     issues: dict[str, int] = {}
-    df = raw.copy()
-    # The source abbreviates September as "Sept" while every other month uses three letters.
-    sept = df["PromoInterval"].str.contains("Sept", regex=False)
+    sept = raw["PromoInterval"].str.contains("Sept", regex=False)
     issues["promo_interval_sept_normalised"] = int(sept.sum())
-    df["PromoInterval"] = df["PromoInterval"].str.replace("Sept", "Sep", regex=False)
-    out = _apply_contract(df, contract)
+    out = _apply_contract(normalise_stores(raw), contract)
 
     since_cols = ["promo2_since_week", "promo2_since_year", "promo2_interval"]
     no_promo_with_dates = ~out["has_promo2"] & out[since_cols].notna().any(axis=1)
