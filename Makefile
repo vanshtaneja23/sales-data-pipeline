@@ -1,0 +1,52 @@
+SHELL := /bin/bash
+COMPOSE := docker compose
+AIRFLOW := $(COMPOSE) exec -T airflow-scheduler
+PY := .venv/bin/python
+
+.PHONY: help env up down nuke run trigger test test-integration test-dag test-all dbt-docs lint
+
+help:
+	@grep -E '^[a-z-]+:.*##' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  %-18s %s\n", $$1, $$2}'
+
+env: ## create .env with random local secrets (never committed)
+	@test -f .env && echo ".env exists, leaving it alone" || ( \
+	  cp .env.example .env && \
+	  sed -i '' "s|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=$$(openssl rand -hex 16)|" .env && \
+	  sed -i '' "s|^AIRFLOW_JWT_SECRET=.*|AIRFLOW_JWT_SECRET=$$(openssl rand -hex 32)|" .env && \
+	  sed -i '' "s|^AIRFLOW_UID=.*|AIRFLOW_UID=$$(id -u)|" .env && echo "wrote .env" )
+
+up: ## build images and start Postgres + Airflow
+	$(COMPOSE) build
+	$(COMPOSE) up -d --wait
+
+down: ## stop the stack (keeps data volume)
+	$(COMPOSE) down
+
+nuke: ## stop the stack and delete the Postgres volume
+	$(COMPOSE) down -v
+
+run: ## run the whole DAG once in-process (airflow dags test), streaming logs
+	$(AIRFLOW) airflow dags test sales_pipeline
+
+trigger: ## trigger the DAG through the scheduler (watch it at http://localhost:8080)
+	$(AIRFLOW) airflow dags unpause sales_pipeline
+	$(AIRFLOW) airflow dags trigger sales_pipeline
+
+test: ## unit tests (no services needed)
+	$(PY) -m pytest -q
+
+test-integration: ## tests that hit the compose Postgres
+	set -a && source .env && set +a && WAREHOUSE_PORT=$${WAREHOUSE_HOST_PORT:-5433} \
+	  WAREHOUSE_USER=$$POSTGRES_USER WAREHOUSE_PASSWORD=$$POSTGRES_PASSWORD \
+	  $(PY) -m pytest -q -m integration
+
+test-dag: ## DAG integrity tests inside the Airflow container
+	$(AIRFLOW) python -m pytest -q -p no:cacheprovider -m airflow /opt/airflow/tests
+
+test-all: test test-integration test-dag
+
+dbt-docs: ## regenerate dbt docs (manifest/catalog) inside the container
+	$(AIRFLOW) bash -c 'cd $$DBT_PROJECT_DIR && $$DBT_BIN docs generate'
+
+lint:
+	.venv/bin/ruff check src dags tests

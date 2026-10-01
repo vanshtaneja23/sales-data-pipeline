@@ -1,0 +1,148 @@
+version: 2
+
+models:
+  - name: fct_sales_daily
+    description: >
+      Daily sales fact table. Grain: one row per store per calendar day present in the source
+      (1,017,209 rows for 1,115 stores, 2013-01-01..2015-07-31). Use this for any revenue,
+      traffic or promotion analysis. Revenue questions should usually filter `is_open` because
+      closed days carry sales_amount = 0. Join to dim_store on store_id and to dim_date on
+      sales_date = date_day. Missing store-days (the H2-2014 gap for 180 stores) are absent,
+      not zero-filled.
+    columns:
+      - name: store_id
+        description: Store identifier; foreign key to dim_store.store_id.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_store')
+                field: store_id
+      - name: sales_date
+        description: Calendar date; foreign key to dim_date.date_day.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_day
+      - name: day_of_week
+        description: ISO weekday, 1 = Monday ... 7 = Sunday.
+      - name: sales_amount
+        description: Daily turnover in currency units (EUR). 0 on closed days.
+        data_tests: [not_null]
+      - name: customer_count
+        description: Number of customers that day.
+      - name: sales_per_customer
+        description: >
+          Average basket size for the day = sales_amount / customer_count, rounded to 2 decimals.
+          NULL when customer_count is 0 (closed days), never divided by zero.
+      - name: is_open
+        description: Store was open that day.
+      - name: is_promo
+        description: Short-term daily promotion ran that day (Mon-Fri only).
+      - name: state_holiday
+        description: none, public, easter or christmas.
+      - name: is_state_holiday
+        description: True on any state holiday.
+      - name: is_school_holiday
+        description: Store-day affected by school holidays.
+      - name: is_zero_sales_while_open
+        description: Data-quality flag; open but zero sales (54 rows). Excluded from average-sales features.
+      - name: batch_id
+        description: Airflow run id of the load that produced this row (lineage).
+
+  - name: dim_store
+    description: >
+      Store dimension. Grain: one row per store (1,115). Combines the Kaggle store reference
+      (store.csv) with the store -> federal state mapping (store_states.csv).
+    columns:
+      - name: store_id
+        description: Store identifier; primary key.
+        data_tests: [unique, not_null]
+      - name: store_type
+        description: Store model code a/b/c/d. Rossmann does not publish what the models mean.
+      - name: assortment_code
+        description: Raw assortment code a/b/c.
+      - name: assortment_level
+        description: basic, extra or extended.
+      - name: competition_distance_m
+        description: Meters to the nearest competitor; NULL when unknown (3 stores).
+      - name: competition_distance_band
+        description: Bucketed competition distance '< 500 m', '500 m - 2 km', '2 - 10 km', '>= 10 km' or 'unknown'.
+      - name: competition_open_since_date
+        description: First day of the month the nearest competitor opened; NULL when unknown.
+      - name: has_promo2
+        description: Store participates in the continuing Promo2 promotion.
+      - name: promo2_since_date
+        description: Monday of the ISO week the store joined Promo2.
+      - name: promo2_interval
+        description: Months when Promo2 rounds restart, e.g. "Jan,Apr,Jul,Oct".
+      - name: state_code
+        description: German federal state code, or "HB,NI" when ambiguous.
+        data_tests: [not_null]
+      - name: state_name
+        description: English federal state name.
+      - name: is_state_ambiguous
+        description: True for the 22 stores coded "HB,NI".
+
+  - name: dim_date
+    description: >
+      Calendar dimension generated as a continuous daily spine from the first to the last sales date
+      (942 days). Grain: one row per calendar day. Use it to detect missing store-days and for
+      week/month rollups. Weeks start Monday (ISO).
+    columns:
+      - name: date_day
+        description: Calendar date; primary key.
+        data_tests: [unique, not_null]
+      - name: iso_year
+        description: ISO-8601 week-numbering year.
+      - name: iso_week
+        description: ISO-8601 week number (1-53).
+      - name: day_of_week
+        description: ISO weekday 1 = Monday ... 7 = Sunday.
+      - name: is_weekend
+        description: Saturday or Sunday.
+      - name: week_start
+        description: Monday of the ISO week.
+      - name: month_start
+        description: First day of the month.
+
+  - name: mart_store_features
+    description: >
+      One row per store with the performance features used by the store-tiering model
+      (analytics/store_tiering.ipynb). "Trading days" means is_open and not is_zero_sales_while_open.
+    columns:
+      - name: store_id
+        description: Store identifier; primary key.
+        data_tests: [unique, not_null]
+      - name: trading_days
+        description: Number of days the store was open and recorded non-zero sales.
+      - name: total_sales
+        description: Sum of sales_amount over trading days, full history.
+      - name: avg_daily_sales
+        description: Mean sales_amount per trading day. Tiering factor "revenue scale" (weight 0.35).
+      - name: avg_daily_customers
+        description: Mean customer_count per trading day. Tiering factor "traffic" (weight 0.15).
+      - name: avg_sales_per_customer
+        description: Total sales / total customers over trading days (average basket). Tiering factor "basket size" (weight 0.15).
+      - name: sales_growth_base
+        description: Total sales in the base growth window, 2014-01-01..2014-06-30.
+      - name: sales_growth_current
+        description: Total sales in the current growth window, 2015-01-01..2015-06-30.
+      - name: sales_growth_yoy
+        description: >
+          Like-for-like year-over-year growth = sales_growth_current / sales_growth_base - 1.
+          H1 vs H1 is used because H2 2014 is missing for 180 stores. Tiering factor "momentum" (weight 0.20).
+      - name: complete_weeks
+        description: Number of Monday-Sunday weeks with all 7 days present for the store.
+      - name: weekly_sales_cv
+        description: >
+          Coefficient of variation (stddev / mean) of weekly sales over complete weeks. Lower = more
+          predictable. Tiering factor "stability" (weight 0.15, inverted so lower CV scores higher).
+      - name: promo_lift
+        description: >
+          Average sales on promo days divided by average sales on non-promo days, minus 1, restricted to
+          trading Mon-Fri non-holiday days. Descriptive only; not used in the tier score.
+      - name: days_missing
+        description: Calendar days in dim_date with no sales row for this store (0 for most; 184 for the 180 H2-2014 gap stores).

@@ -1,0 +1,20 @@
+source: stores
+table: raw.stores
+primary_key: [store_id]
+columns:
+  - {source: Store,                     name: store_id,                     type: integer, nullable: false}
+  - {source: StoreType,                 name: store_type,                   type: text,    nullable: false, allowed: [a, b, c, d]}
+  - {source: Assortment,                name: assortment,                   type: text,    nullable: false, allowed: [a, b, c]}
+  - {source: CompetitionDistance,       name: competition_distance_m,       type: numeric, nullable: true, min: 0}
+  - {source: CompetitionOpenSinceMonth, name: competition_open_since_month, type: smallint, nullable: true, min: 1, max: 12}
+  - {source: CompetitionOpenSinceYear,  name: competition_open_since_year,  type: smallint, nullable: true, min: 1900, max: 2015}
+  - {source: Promo2,                    name: has_promo2,                   type: boolean, nullable: false}
+  - {source: Promo2SinceWeek,           name: promo2_since_week,            type: smallint, nullable: true, min: 1, max: 53}
+  - {source: Promo2SinceYear,           name: promo2_since_year,            type: smallint, nullable: true, min: 2009, max: 2015}
+  - {source: PromoInterval,             name: promo2_interval,              type: text,    nullable: true,
+     allowed: ["Jan,Apr,Jul,Oct", "Feb,May,Aug,Nov", "Mar,Jun,Sep,Dec"]}
+derived_columns: []
+volume:
+  min_rows: 1100
+  max_rows: 1200
+  max_change_pct: 2

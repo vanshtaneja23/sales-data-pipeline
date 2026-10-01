@@ -1,0 +1,30 @@
+# secrets
+.env
+.env.*
+!.env.example
+
+# runtime
+data/
+logs/
+.cache/
+*.parquet
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+*.egg-info/
+
+# dbt
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
+dbt/.user.yml
+
+# os/editor
+.DS_Store
+.idea/
+.vscode/

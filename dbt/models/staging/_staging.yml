@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: stg_sales
+    description: >
+      Staging view over raw.sales. Same grain (store x day), adds `is_state_holiday`.
+      No rows are filtered here; closed days and the zero-sales-while-open anomalies are kept
+      and flagged so downstream models choose explicitly what to exclude.
+    columns:
+      - name: store_id
+        description: Store identifier.
+        data_tests: [not_null]
+      - name: sales_date
+        description: Calendar date.
+        data_tests: [not_null]
+      - name: is_state_holiday
+        description: True when state_holiday is anything other than 'none'.
+
+  - name: stg_stores
+    description: >
+      Staging view over raw.stores. Decodes assortment (a=basic, b=extra, c=extended) and derives
+      competition_open_since_date (first of the month) and promo2_since_date (Monday of the ISO week).
+    columns:
+      - name: store_id
+        description: Store identifier.
+        data_tests: [unique, not_null]
+      - name: assortment_level
+        description: Decoded assortment level.
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [basic, extra, extended]
+      - name: competition_open_since_date
+        description: First day of the month the nearest competitor opened. NULL when month or year is unknown.
+      - name: promo2_since_date
+        description: Monday of the ISO week the store joined Promo2. NULL when the store is not in Promo2.
+
+  - name: stg_store_states
+    description: Staging view over raw.store_states with readable German state names.
+    columns:
+      - name: store_id
+        description: Store identifier.
+        data_tests: [unique, not_null]
+      - name: state_name
+        description: English name of the federal state; "Bremen or Lower Saxony (ambiguous in source)" for code HB,NI.
+        data_tests: [not_null]

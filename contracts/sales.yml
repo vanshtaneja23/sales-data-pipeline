@@ -1,0 +1,30 @@
+# Data contract for the daily sales feed. Drives: target DDL, schema-drift checks,
+# volume bounds and freshness. Changing this file is a deliberate, reviewed act.
+source: sales
+table: raw.sales
+primary_key: [store_id, sales_date]
+columns:
+  - {source: Store,         name: store_id,        type: integer, nullable: false}
+  - {source: DayOfWeek,     name: day_of_week,     type: smallint, nullable: false, min: 1, max: 7}
+  - {source: Date,          name: sales_date,      type: date,    nullable: false}
+  - {source: Sales,         name: sales_amount,    type: integer, nullable: false, min: 0}
+  - {source: Customers,     name: customer_count,  type: integer, nullable: false, min: 0}
+  - {source: Open,          name: is_open,         type: boolean, nullable: false}
+  - {source: Promo,         name: is_promo,        type: boolean, nullable: false}
+  - {source: StateHoliday,  name: state_holiday,   type: text,    nullable: false,
+     allowed: [none, public, easter, christmas]}
+  - {source: SchoolHoliday, name: is_school_holiday, type: boolean, nullable: false}
+# Columns added by the cleaning step (not present in the source file).
+derived_columns:
+  - {name: is_zero_sales_while_open, type: boolean, nullable: false}
+volume:
+  # Full historical extract is 1,017,209 rows. Bounds catch truncation and runaway duplication.
+  min_rows: 1000000
+  max_rows: 1100000
+  # Fail if the row count moves more than this vs. the last successful load.
+  max_change_pct: 5
+freshness:
+  date_column: sales_date
+  # The dataset is a frozen historical extract ending 2015-07-31, so freshness is measured
+  # against the run's `as_of_date` param (defaults to the extract end) rather than wall-clock now.
+  max_lag_days: 3

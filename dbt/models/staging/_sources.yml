@@ -1,0 +1,88 @@
+version: 2
+
+sources:
+  - name: raw
+    description: >
+      Source-conformed tables loaded by the Airflow DAG (task group `load`). Each table is a typed,
+      cleaned copy of one upstream file: columns renamed to snake_case and cast according to the
+      YAML data contract in contracts/<source>.yml. Every row carries `_batch_id` (the Airflow run
+      id that loaded it) and `_loaded_at` (load transaction timestamp). Tables are fully replaced
+      on every run (TRUNCATE + COPY in one transaction), so readers never see a partial load.
+    schema: raw
+    loaded_at_field: _loaded_at
+    freshness:
+      warn_after: {count: 24, period: hour}
+      error_after: {count: 48, period: hour}
+    tables:
+      - name: sales
+        description: >
+          Daily sales per store from the Rossmann Kaggle competition file train.csv,
+          covering 2013-01-01 to 2015-07-31 for 1,115 stores (1,017,209 rows).
+          One row per store per calendar day, including days the store was closed.
+          Known gap: 180 stores have no rows at all from 2014-07-01 to 2014-12-31, and store 988 is
+          missing 2013-01-01. These gaps exist in the upstream file and are reported by the
+          parity check, not filled in.
+        columns:
+          - name: store_id
+            description: Store identifier (Kaggle `Store`), 1..1115.
+          - name: day_of_week
+            description: ISO weekday 1=Monday..7=Sunday (Kaggle `DayOfWeek`). Verified to match sales_date during cleaning.
+          - name: sales_date
+            description: Calendar date of the sales day (Kaggle `Date`).
+          - name: sales_amount
+            description: Turnover for the store on that day (Kaggle `Sales`), in currency units (EUR, undisclosed precision). 0 on closed days.
+          - name: customer_count
+            description: Number of customers (transactions) that day (Kaggle `Customers`).
+          - name: is_open
+            description: Whether the store was open that day (Kaggle `Open`).
+          - name: is_promo
+            description: Whether the store ran the short-term daily promotion ("Promo") that day. Promos only run Monday-Friday.
+          - name: state_holiday
+            description: >
+              State holiday type decoded from Kaggle `StateHoliday`: '0' -> none, 'a' -> public,
+              'b' -> easter, 'c' -> christmas. Most stores are closed on state holidays.
+          - name: is_school_holiday
+            description: Whether the store's (store, date) was affected by public school closures (Kaggle `SchoolHoliday`).
+          - name: is_zero_sales_while_open
+            description: >
+              Data-quality flag added during cleaning: the store is marked open but reported zero sales.
+              54 such rows exist upstream. They are kept but excluded from average-sales metrics.
+      - name: stores
+        description: >
+          Store reference data from the Kaggle file store.csv: one row per store with store model,
+          assortment level, nearest competitor and long-running Promo2 participation.
+        columns:
+          - name: store_id
+            description: Store identifier, joins to sales.store_id.
+          - name: store_type
+            description: Store model code a, b, c or d. Rossmann does not publish what the models mean.
+          - name: assortment
+            description: Assortment level code; a = basic, b = extra, c = extended.
+          - name: competition_distance_m
+            description: Distance in meters to the nearest competitor store. NULL for 3 stores where the source is blank (unknown, not zero).
+          - name: competition_open_since_month
+            description: Month the nearest competitor opened. NULL when unknown (354 stores).
+          - name: competition_open_since_year
+            description: Year the nearest competitor opened. NULL when unknown.
+          - name: has_promo2
+            description: Whether the store participates in Promo2, a continuing and consecutive promotion (Kaggle `Promo2`).
+          - name: promo2_since_week
+            description: ISO calendar week the store started Promo2. NULL when has_promo2 is false.
+          - name: promo2_since_year
+            description: Year the store started Promo2. NULL when has_promo2 is false.
+          - name: promo2_interval
+            description: >
+              Months in which a new Promo2 round starts, e.g. "Feb,May,Aug,Nov". The source spells
+              September as "Sept"; cleaning normalises it to "Sep" (106 stores).
+      - name: store_states
+        description: >
+          Community-published mapping of each Rossmann store to its German federal state
+          (store_states.csv from the 3rd-place Kaggle solution). 22 stores carry the combined code
+          "HB,NI" because the original authors could not distinguish Bremen from Lower Saxony.
+        columns:
+          - name: store_id
+            description: Store identifier, joins to stores.store_id.
+          - name: state_code
+            description: Two-letter German state code (e.g. NW = North Rhine-Westphalia) or the ambiguous "HB,NI".
+          - name: is_state_ambiguous
+            description: True when state_code lists more than one state ("HB,NI").

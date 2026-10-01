@@ -1,0 +1,31 @@
+name: sales_dbt
+version: "1.0.0"
+profile: sales_warehouse
+config-version: 2
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+target-path: target
+clean-targets: ["target", "dbt_packages"]
+
+vars:
+  # Like-for-like YoY window (H1 vs H1): H2 2014 is missing for 180 stores upstream.
+  growth_base_start: "2014-01-01"
+  growth_base_end: "2014-06-30"
+  growth_curr_start: "2015-01-01"
+  growth_curr_end: "2015-06-30"
+
+models:
+  sales_dbt:
+    staging:
+      +schema: staging
+      +materialized: view
+    marts:
+      +schema: marts
+      +materialized: table
+
+tests:
+  sales_dbt:
+    # Every test failure fails `dbt build`, which fails the Airflow task. Warnings are opt-in per test.
+    +severity: error

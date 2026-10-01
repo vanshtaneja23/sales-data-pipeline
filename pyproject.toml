@@ -1,0 +1,40 @@
+[project]
+name = "sales-data-pipeline"
+version = "0.1.0"
+description = "Airflow + dbt batch pipeline for Rossmann store sales, with store tiering and an evaluated RAG assistant over the data docs."
+requires-python = ">=3.12,<3.13"
+# Versions match the apache/airflow:3.3.2-python3.12 image so local tests run the same code paths.
+dependencies = [
+  "pandas==3.0.5",
+  "pyarrow==25.0.1",
+  "psycopg[binary]==3.3.5",
+  "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+analytics = ["scipy>=1.14", "matplotlib>=3.9", "jupyter>=1.1", "nbconvert>=7.16", "ipykernel>=6.29"]
+rag = ["sentence-transformers==6.1.0", "pgvector==0.5.0", "anthropic==1.11.0", "transformers>=5.0", "torch>=2.6", "accelerate>=1.0"]
+dev = ["pytest==8.4.2", "ruff>=0.8"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sales_pipeline", "src/sales_rag"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+markers = [
+  "integration: needs the docker-compose Postgres running (make up)",
+  "airflow: needs Airflow installed (run inside the airflow container)",
+]
+addopts = "-m 'not integration and not airflow'"
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
