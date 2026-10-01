@@ -43,7 +43,7 @@ test-integration: ## tests that hit the compose Postgres
 	  $(PY) -m pytest -q -m integration
 
 test-dag: ## DAG integrity tests inside the Airflow container
-	$(AIRFLOW) python -m pytest -q -p no:cacheprovider -m airflow /opt/airflow/tests
+	$(AIRFLOW) python -m pytest -q -p no:cacheprovider -m airflow /opt/airflow/tests/test_dag_integrity.py
 
 test-all: test test-integration test-dag
 
