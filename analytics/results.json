@@ -1,0 +1,215 @@
+{
+  "coverage": {
+    "rows": "1017209",
+    "stores": "1115",
+    "first_day": "2013-01-01",
+    "last_day": "2015-07-31",
+    "open_days": "844392"
+  },
+  "spearman_revenue_traffic": 0.797,
+  "spearman_revenue_basket": 0.068,
+  "hypothesis_competition": {
+    "n_near": 218,
+    "n_far": 187,
+    "median_near": 7017.0,
+    "median_far": 6675.0,
+    "median_diff": 341.0,
+    "median_diff_ci95": [
+      -214.0,
+      784.0
+    ],
+    "mann_whitney_u": 22649.0,
+    "p_value": 0.053725130493586445,
+    "rank_biserial": 0.111,
+    "median_customers_near": 868.0,
+    "median_customers_far": 651.0,
+    "verdict": "fail to reject H0",
+    "direction_by_store_type": {
+      "a": "near > far",
+      "c": "near < far",
+      "d": "near < far"
+    },
+    "type_mix_near": {
+      "a": 0.72,
+      "c": 0.17,
+      "d": 0.09,
+      "b": 0.02
+    },
+    "type_mix_far": {
+      "a": 0.51,
+      "d": 0.43,
+      "c": 0.06
+    }
+  },
+  "hypothesis_competition_by_type": {
+    "('count', '< 500 m')": {
+      "a": 156.0,
+      "b": 4.0,
+      "c": 38.0,
+      "d": 20.0
+    },
+    "('count', '>= 10 km')": {
+      "a": 95.0,
+      "b": null,
+      "c": 11.0,
+      "d": 81.0
+    },
+    "('median', '< 500 m')": {
+      "a": 7107.0,
+      "b": 11432.0,
+      "c": 6879.0,
+      "d": 6360.0
+    },
+    "('median', '>= 10 km')": {
+      "a": 6462.0,
+      "b": null,
+      "c": 7986.0,
+      "d": 6896.0
+    }
+  },
+  "weights": {
+    "revenue_scale": 0.4,
+    "momentum": 0.25,
+    "stability": 0.2,
+    "basket": 0.15
+  },
+  "tier_shares": {
+    "A": 0.2,
+    "B": 0.5,
+    "C": 0.8,
+    "D": 1.0
+  },
+  "tier_score_ranges": {
+    "count": {
+      "A": 223,
+      "B": 334,
+      "C": 335,
+      "D": 223
+    },
+    "min": {
+      "A": 64.8,
+      "B": 50.2,
+      "C": 35.6,
+      "D": 7.8
+    },
+    "max": {
+      "A": 93.4,
+      "B": 64.7,
+      "C": 50.2,
+      "D": 35.6
+    },
+    "median": {
+      "A": 71.1,
+      "B": 56.8,
+      "C": 43.7,
+      "D": 28.7
+    }
+  },
+  "sensitivity": {
+    "borderline_stores": 357,
+    "share_stores_stable_ge_90pct": 0.519,
+    "share_stores_stable_ge_80pct": 0.68,
+    "median_stability": 0.908,
+    "n_draws": 1000
+  },
+  "example_boundary_store": {
+    "store_id": 236,
+    "tier": "B",
+    "rank": 224,
+    "of": 1115,
+    "score": 64.72,
+    "tier_floor": 50.23,
+    "next_tier": "A",
+    "points_to_next_tier": 0.04,
+    "breakdown": [
+      {
+        "factor": "revenue_scale",
+        "metric": "avg_daily_sales",
+        "value": 7119.56,
+        "percentile": 61.0,
+        "weight": 0.4,
+        "points": 24.39,
+        "max_points": 40.0
+      },
+      {
+        "factor": "momentum",
+        "metric": "sales_growth_yoy",
+        "value": 0.0889,
+        "percentile": 84.5,
+        "weight": 0.25,
+        "points": 21.13,
+        "max_points": 25.0
+      },
+      {
+        "factor": "stability",
+        "metric": "weekly_sales_cv",
+        "value": 0.1698,
+        "percentile": 75.0,
+        "weight": 0.2,
+        "points": 15.0,
+        "max_points": 20.0
+      },
+      {
+        "factor": "basket",
+        "metric": "avg_sales_per_customer",
+        "value": 8.2327,
+        "percentile": 27.9,
+        "weight": 0.15,
+        "points": 4.18,
+        "max_points": 15.0
+      }
+    ],
+    "weakest_factor": "basket",
+    "tier_stability": 0.486
+  },
+  "example_store_1": {
+    "store_id": 1,
+    "tier": "D",
+    "rank": 1025,
+    "of": 1115,
+    "score": 27.57,
+    "tier_floor": 7.8,
+    "next_tier": "C",
+    "points_to_next_tier": 8.01,
+    "breakdown": [
+      {
+        "factor": "revenue_scale",
+        "metric": "avg_daily_sales",
+        "value": 4759.1,
+        "percentile": 13.9,
+        "weight": 0.4,
+        "points": 5.56,
+        "max_points": 40.0
+      },
+      {
+        "factor": "momentum",
+        "metric": "sales_growth_yoy",
+        "value": -0.0227,
+        "percentile": 10.9,
+        "weight": 0.25,
+        "points": 2.74,
+        "max_points": 25.0
+      },
+      {
+        "factor": "stability",
+        "metric": "weekly_sales_cv",
+        "value": 0.1727,
+        "percentile": 72.5,
+        "weight": 0.2,
+        "points": 14.5,
+        "max_points": 20.0
+      },
+      {
+        "factor": "basket",
+        "metric": "avg_sales_per_customer",
+        "value": 8.4374,
+        "percentile": 31.8,
+        "weight": 0.15,
+        "points": 4.78,
+        "max_points": 15.0
+      }
+    ],
+    "weakest_factor": "momentum",
+    "tier_stability": 0.984
+  }
+}
