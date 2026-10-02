@@ -8,9 +8,11 @@ import yaml
 from sales_pipeline.config import REPO_ROOT
 
 DBT_DIR = REPO_ROOT / "dbt"
-# Source YAML only: dbt/target holds generated artefacts (including *directories* named like _marts.yml).
+# Source YAML only: dbt/target holds generated artefacts (including *directories* named like _marts.yml),
+# and dbt/.user.yml is a git-ignored file dbt writes at run time (its presence made counts machine-dependent).
 DBT_YAML = sorted(
-    p for p in DBT_DIR.rglob("*.yml") if p.is_file() and "target" not in p.relative_to(DBT_DIR).parts
+    p for p in DBT_DIR.rglob("*.yml")
+    if p.is_file() and "target" not in p.relative_to(DBT_DIR).parts and p.name != ".user.yml"
 )
 
 

@@ -81,7 +81,7 @@ Local Python environment for tests, the notebook and the RAG app:
 
 ```bash
 uv venv --python 3.12 .venv && uv pip install -e ".[dev,analytics,rag]"
-make test               # 103 unit tests, no services needed
+make test               # 102 unit tests, no services needed
 make test-integration   # 7 tests against the compose Postgres
 make test-dag           # 6 DAG-structure tests inside the Airflow container
 make drill-stale        # failure drill: a run with as_of_date 61 days after the data ends must fail
@@ -265,7 +265,7 @@ decoding, Apple M4 Pro GPU), embeddings `bge-small-en-v1.5`, vector retrieval, t
 
 ## What's not implemented
 
-* **CI covers unit tests only.** The 103 unit tests run in GitHub Actions on every push and pull request
+* **CI covers unit tests only.** The 102 unit tests run in GitHub Actions on every push and pull request
   to `main`; integration tests (`make test-integration`, need Postgres) and DAG tests (`make test-dag`, need
   the Airflow container) still run locally only.
 * **No write-audit-publish.** Post-load gates protect the marts, not `raw`.
