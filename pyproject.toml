@@ -13,7 +13,10 @@ dependencies = [
 
 [project.optional-dependencies]
 analytics = ["scipy>=1.14", "matplotlib>=3.9", "jupyter>=1.1", "nbconvert>=7.16", "ipykernel>=6.29"]
-rag = ["sentence-transformers==6.1.0", "pgvector==0.5.0", "anthropic==1.11.0", "transformers>=5.0", "torch>=2.6", "accelerate>=1.0"]
+# rag-core: what importing sales_rag needs at module level (unit tests/CI); the heavy model stack is
+# imported lazily and only installed with the full `rag` extra.
+rag-core = ["pgvector==0.5.0"]
+rag = ["sales-data-pipeline[rag-core]", "sentence-transformers==6.1.0", "anthropic==1.11.0", "transformers>=5.0", "torch>=2.6", "accelerate>=1.0"]
 dev = ["pytest==8.4.2", "ruff>=0.8"]
 
 [build-system]

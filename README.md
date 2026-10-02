@@ -1,5 +1,7 @@
 # sales-data-pipeline
 
+[![CI](https://github.com/vanshtaneja23/sales-data-pipeline/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/vanshtaneja23/sales-data-pipeline/actions/workflows/ci.yml)
+
 An end-to-end retail analytics project on public Rossmann store data (1,115 stores, 1,017,209
 store-days, 2013-01 → 2015-07):
 
@@ -263,7 +265,9 @@ decoding, Apple M4 Pro GPU), embeddings `bge-small-en-v1.5`, vector retrieval, t
 
 ## What's not implemented
 
-* **No CI.** Tests run locally (`make test test-integration test-dag`); there is no GitHub Actions workflow yet.
+* **CI covers unit tests only.** The 103 unit tests run in GitHub Actions on every push and pull request
+  to `main`; integration tests (`make test-integration`, need Postgres) and DAG tests (`make test-dag`, need
+  the Airflow container) still run locally only.
 * **No write-audit-publish.** Post-load gates protect the marts, not `raw`.
 * **No incremental loading, partitioning or backfill logic.** The source is a single historical extract.
 * **No external alerting integration** (Slack/PagerDuty). Alerts go to structured logs and `ops.pipeline_alerts`.

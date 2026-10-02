@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+
+      - name: Create virtualenv
+        run: uv venv
+
+      # rag-core = pgvector only: sales_rag imports it at module level; torch etc. are lazy imports.
+      - name: Install package with unit-test extras
+        run: uv pip install -e ".[dev,rag-core]"
+
+      # Same command as local `make test` (integration/airflow markers are deselected in pyproject).
+      - name: Unit tests
+        run: make test
